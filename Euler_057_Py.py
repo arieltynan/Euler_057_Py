@@ -2,24 +2,26 @@
 #Euler Problem 057, Square root convergents, solved in Python
 #Started 7 March 2022
 
+from math import floor
 from fractions import Fraction
+from decimal import *
 
 
-
-def expansion(num,count,success):
+def expansion(num,count,success,den_prev):
     while count < 1000:
         count = count + 1
-        f = Fraction(1 + num).limit_denominator(100000000)
-        print(f,f.numerator,f.denominator,count)
+        getcontext().prec = floor(count)+1000
+        f = Fraction(Decimal(1 + num)).limit_denominator(100*(den_prev))
+        print(count,f)
         str_num = str(f.numerator)
         str_den = str(f.denominator)
-        if str_num[0] == '1' and str_den[0] != '1':
+        den_prev = f.denominator
+        if len(str_num) > len(str_den):
             success = success + 1
             print("YES")
-        num = 1/(2+num)
-        #if f[0] % f[1] > f[0]/2:
-            #success = success + 1
-        return expansion(num,count,success)
+        num = Decimal(1/(2+num))
+
+        return expansion(num,count,success,den_prev)
     return success
  
 
@@ -30,4 +32,6 @@ frac_list = []
 
 #print(Fraction(1,1) + expansion(1,2,0))
 
-print(expansion(0.5,0,0))
+getcontext().prec = 300
+print(expansion(0.5,0,0,3))
+
