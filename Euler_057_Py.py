@@ -1,8 +1,7 @@
 #Ariel Tynan
 #Euler Problem 057, Square root convergents, solved in Python
-#Started 7 March 2022
+#Started 7 March 2022, solved 14 March 2022
 
-from math import floor
 from fractions import Fraction
 from decimal import *
 
@@ -16,16 +15,11 @@ def expansion(num,count,success,den_prev):
     while count < 1000: #1000 iterations
         count = count + 1 #while loop used for recursion
         f = Fraction(Decimal(1 + num)).limit_denominator(100*(den_prev))
-        print(count,f)
-        str_num = str(f.numerator)
-        str_den = str(f.denominator)
+        #print(count,f)
         den_prev = f.denominator
-        if len(str_num) > len(str_den): #check num is longer than den each iteration
+        if len(str(f.numerator)) > len(str(f.denominator)): #check num is longer than den each iteration
             success = success + 1
-            print("YES")
-        num = Decimal(1/(2+num))
-
-        return expansion(num,count,success,den_prev)
+        return expansion(Decimal(1/(2+num)),count,success,den_prev) #recursion with updated vars
     return success
  
 
